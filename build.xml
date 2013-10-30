@@ -1,0 +1,85 @@
+<project name="Information System - Utilities" default="build-jar">
+	<property name="src.dir" value="${basedir}\src"/>
+	<property name="classes.dir" value="${basedir}\build\bin"/>
+	<property name="jar.dir" value="${basedir}\build\jar"/>
+	<property name="jar.name" value="IS-Util.jar"/>
+	<property name="thirdparty.dir" value="${basedir}\..\thirdparty"/> 
+	<property name="jboss.dir" value="C:\dev\jboss-4.2.3.GA"/>
+
+	
+	<path id="build.classpath">
+		<fileset dir="${thirdparty.dir}\oracle" includes="ojdbc14.jar"/>
+		<fileset dir="${thirdparty.dir}\inetsoft" includes="xtools.jar,xreport_pro.jar"/>
+		<fileset dir="${thirdparty.dir}\jdom" includes="jdom.jar"/>
+		<fileset dir="${thirdparty.dir}\ftp" includes="*.jar"/>
+		<fileset dir="${thirdparty.dir}\pgp" includes="*jdk15-144.jar"/>
+		<fileset dir="${thirdparty.dir}\JBoss-4.2.3" includes="activation.jar"/>
+		<fileset dir="${thirdparty.dir}\JBoss-4.2.3" includes="javax.servlet.jar"/>
+		<fileset dir="${thirdparty.dir}\JBoss-4.2.3" includes="jboss-j2ee.jar"/>
+		<fileset dir="${thirdparty.dir}\JBoss-4.2.3" includes="log4j.jar"/>
+		<fileset dir="${thirdparty.dir}\JBoss-4.2.3" includes="mail.jar"/>
+		<fileset dir="${thirdparty.dir}\JBoss-4.2.3" includes="jboss-system.jar"/>
+		<fileset dir="${thirdparty.dir}\JBoss-4.2.3" includes="servlet-api.jar"/>
+		<fileset dir="${thirdparty.dir}\xstream" includes="*.jar"/>
+	</path>
+	<property name="lib.dependency" value="..\lib\jdom.jar ..\lib\ojdbc14.jar ..\lib\jboss-j2ee.jar ..\lib\xtools.jar ..\lib\xreport_pro.jar ..\lib\activation.jar ..\lib\mail.jar ..\lib\javax.servlet.jar  ..\lib\xstream-1.1.2jar"/>
+	
+	<target name="_clean">
+		<delete verbose="false"  quiet="false" includeemptydirs="true">
+			<fileset dir="${classes.dir}" includes="**/*" defaultexcludes="false"/>
+			<fileset dir="${jar.dir}" includes="**/*" defaultexcludes="false"/>
+		</delete>
+	</target>
+	
+	<target name="build">
+		<echo level="warning">===========================</echo>
+		<echo level="warning">== Compiling in 1.5 mode ==</echo>
+		<echo level="warning">===========================</echo>
+		<javac destdir="${classes.dir}" classpathref="build.classpath" includejavaruntime="true" deprecation="false" debug="true" optimize="true" fork="true" target="1.5" source="1.5">
+			<src location="${src.dir}"/>
+		</javac>
+	</target>
+	
+	<target name="rebuild" depends="_clean,build"/>
+	
+	<target name="build-jar" depends="build">
+		<tstamp>
+			<format property="compilation.time" pattern="MM.dd.yyyy HH:mm:ss"/>
+		</tstamp>
+		<jar destfile="${jar.dir}\${jar.name}" basedir="${classes.dir}" index="true" compress="false" duplicate="fail">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}"/>
+				<attribute name="Class-Path" value="${lib.dependency}"/>
+				<section name="Description">
+					<attribute name="Copyright" value="EIM SA"/>
+				</section>
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="rebuild-jar" depends="rebuild">
+		<tstamp>
+			<format property="compilation.time" pattern="MM.dd.yyyy HH:mm:ss"/>
+		</tstamp>
+		<jar destfile="${jar.dir}\${jar.name}" basedir="${classes.dir}" index="true" compress="true" duplicate="fail">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}"/>
+				<attribute name="Class-Path" value="${lib.dependency}"/>
+				<section name="Description">
+					<attribute name="Copyright" value="EIM SA"/>
+				</section>
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="_deploy" depends="build-jar" if="deploy.dir">
+		<mkdir dir="${deploy.dir}"/>
+		<copy file="${jar.dir}\${jar.name}" todir="${deploy.dir}"/>
+	</target>
+	
+	<target name="_redeploy" depends="rebuild-jar" if="deploy.dir">
+		<mkdir dir="${deploy.dir}"/>
+		<copy file="${jar.dir}\${jar.name}" todir="${deploy.dir}"/>
+	</target>
+	
+</project>

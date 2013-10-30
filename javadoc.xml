@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Information System - Util" default="javadoc">
+    <target name="javadoc">
+        <javadoc destdir="build\javadoc" access="private" source="1.4"
+            use="true" notree="false" nonavbar="false" noindex="false"
+            splitindex="true" author="true" version="true"
+            nodeprecatedlist="false" nodeprecated="false"
+            packagenames="com.eim.util.exceptions.web,com.eim.util.model,com.eim.util.exceptions,com.eim.util.db.lobmanagement.oracle,com.eim.util.xml,com.eim.util.exceptions.ejb,com.eim.util.exceptions.validation,com.eim.util.db.lobmanagement,com.eim.util.exceptions.db,com.eim.util.security.encription,com.eim.util.format"
+            sourcepath="src"
+            classpath="build\bin;C:\dev\InformationSystem\Projects\thirdparty\jdom\jdom-b9\build\jdom.jar;C:\dev\InformationSystem\Projects\thirdparty\oracle\classes12.zip;C:\j2sdkee1.3.1\lib\j2ee.jar" doctitle="Information System - Util">
+            <link href="file:/C:/dev/InformationSystem/Projects/thirdparty/jdom/jdom-b9/build/apidocs/"/>
+            <link href="file:/C:/j2sdkee1.3.1/doc/api/"/>
+            <link href="file:/C:/j2sdk1.4.2/docs/api/"/>
+        </javadoc>
+    </target>
+</project>
